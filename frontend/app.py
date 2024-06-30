@@ -109,3 +109,43 @@ with st.expander("Delete Product"):
     if st.button("Delete Product"):
         response = requests.delete(f"http://backend:8000/products/{delete_id}")
         show_response_message(response)
+
+# Update Product
+with st.expander("Update Product"):
+    with st.form("update_product"):
+        update_id = st.number_input("Product ID", min_value=1, format="%d")
+        new_name = st.text_input("New Product Name")
+        new_description = st.text_area("New Product Description")
+        new_price = st.number_input(
+            "New Price",
+            min_value=0.01,
+            format="%f",
+        )
+        new_category = st.selectbox(
+            "New Category",
+            ["Electronics", "Appliances", "Furniture", "Clothing", "Shoes"],
+        )
+        new_email = st.text_input("New Supplier Email")
+
+        update_button = st.form_submit_button("Update Product")
+
+        if update_button:
+            update_data = {}
+            if new_name:
+                update_data["name"] = new_name
+            if new_description:
+                update_data["description"] = new_description
+            if new_price > 0:
+                update_data["price"] = new_price
+            if new_email:
+                update_data["supplier_email"] = new_email
+            if new_category:
+                update_data["category"] = new_category
+
+            if update_data:
+                response = requests.put(
+                    f"http://backend:8000/products/{update_id}", json=update_data
+                )
+                show_response_message(response)
+            else:
+                st.error("No information provided for update")
