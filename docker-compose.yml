@@ -27,11 +27,8 @@ services:
     networks:
       - mynetwork
 
-
-  frontend:
-
-  networks:
-    mynetwork:
+networks:
+  mynetwork:
 
 volumes:
   postgres_data:
