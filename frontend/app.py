@@ -25,3 +25,32 @@ def show_response_message(response):
                     st.error(f"Error: {data['detail']}")
         except ValueError:
             st.error("Unknown error. Failed to decode the response.")
+
+# Add Product
+with st.expander("Add a New Product"):
+    with st.form("new_product"):
+        name = st.text_input("Product Name")
+        description = st.text_area("Product Description")
+        price = st.number_input("Price", min_value=0.01, format="%f")
+        category = st.selectbox(
+            "Category",
+            ["Electronics", "Appliances", "Furniture", "Clothing", "Shoes"],
+        )
+        supplier_email = st.text_input("Supplier Email")
+        submit_button = st.form_submit_button("Add Product")
+
+        if submit_button:
+            response = requests.post(
+                "http://backend:8000/products/",
+                json={
+                    "name": name,
+                    "description": description,
+                    "price": price,
+                    "category": category,
+                    "supplier_email": supplier_email,
+                },
+            )
+            show_response_message(response)
+          
+
+          
