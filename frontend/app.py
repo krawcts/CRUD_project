@@ -77,6 +77,32 @@ with st.expander("View Products"):
         else:
             show_response_message(response)
 
+# Get Product Details
+with st.expander("Get Product Details"):
+    get_id = st.number_input("Product ID", min_value=1, format="%d")
+    if st.button("Fetch Product"):
+        response = requests.get(f"http://backend:8000/products/{get_id}")
+        if response.status_code == 200:
+            product = response.json()
+            df = pd.DataFrame([product])
+
+            df = df[
+                [
+                    "id",
+                    "name",
+                    "description",
+                    "price",
+                    "category",
+                    "supplier_email",
+                    "created_at",
+                ]
+            ]
+
+            # Display the DataFrame without the index
+            st.write(df.to_html(index=False), unsafe_allow_html=True)
+        else:
+            show_response_message(response)
+
 # Delete Product
 with st.expander("Delete Product"):
     delete_id = st.number_input("Product ID to Delete", min_value=1, format="%d")
