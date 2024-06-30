@@ -28,7 +28,10 @@ def read_one_product(product_id: int, db: Session = Depends(get_db)):
     return product
 
 # create route to add 1 item
-@router.post()
+@router.post("/products/", response_model=ProductResponse)
+def create_product(product: ProductCreate, db: Session = Depends(get_db)):
+    return create_product(product=product, db=db)
+
 
 # create route to delete 1 item
 @router.delete()
