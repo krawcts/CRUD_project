@@ -52,5 +52,28 @@ with st.expander("Add a New Product"):
             )
             show_response_message(response)
           
+# View Products
+with st.expander("View Products"):
+    if st.button("Show All Products"):
+        response = requests.get("http://backend:8000/products/")
+        if response.status_code == 200:
+            products = response.json()
+            df = pd.DataFrame(products)
 
-          
+            df = df[
+                [
+                    "id",
+                    "name",
+                    "description",
+                    "price",
+                    "category",
+                    "supplier_email",
+                    "created_at",
+                ]
+            ]
+
+            # Display the DataFrame without the index
+            st.write(df.to_html(index=False), unsafe_allow_html=True)
+        else:
+            show_response_message(response)
+
