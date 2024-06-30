@@ -24,7 +24,7 @@ def read_all_products(db: Session = Depends(get_db)):
 def read_one_product(product_id: int, db: Session = Depends(get_db)):
     product = get_product(db=db, product_id=product_id)
     if product is None:
-        raise HTTPException(status_code=404, detail="Product does not exist.")
+        raise HTTPException(status_code=404, detail="Product not found")
     return product
 
 # create route to add 1 item
@@ -32,9 +32,13 @@ def read_one_product(product_id: int, db: Session = Depends(get_db)):
 def create_product(product: ProductCreate, db: Session = Depends(get_db)):
     return create_product(product=product, db=db)
 
-
 # create route to delete 1 item
-@router.delete()
+@router.delete("/products/{product_id}", response_model=ProductResponse)
+def detele_product(product_id: int, db: Session = Depends(get_db)):
+    db_product = delete_product(db, product_id=product_id)
+    if db_product is None:
+        raise HTTPException(status_code=404, detail="Product not found")
+    return db_product
 
 # create route to update 1 item
 @router.put()
