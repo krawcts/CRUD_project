@@ -77,3 +77,9 @@ with st.expander("View Products"):
         else:
             show_response_message(response)
 
+# Delete Product
+with st.expander("Delete Product"):
+    delete_id = st.number_input("Product ID to Delete", min_value=1, format="%d")
+    if st.button("Delete Product"):
+        response = requests.delete(f"http://backend:8000/products/{delete_id}")
+        show_response_message(response)
