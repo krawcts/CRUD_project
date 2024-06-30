@@ -21,8 +21,8 @@ class ProductResponse(ProductBase):
         from_attributes = True
 
 class ProductUpdate(BaseModel):
-    name = Optional[str] = None
-    description = Optional[str] = None
-    price = Optional[PositiveFloat] = None
-    category = Optional[str] = None
-    supplier_email = Optional[EmailStr] = None
+    name: Optional[str] = None
+    description: Optional[str] = None
+    price: Optional[PositiveFloat] = None
+    category: Optional[str] = None
+    supplier_email: Optional[EmailStr] = None
