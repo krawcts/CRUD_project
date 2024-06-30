@@ -22,10 +22,10 @@ def read_all_products(db: Session = Depends(get_db)):
 # create route to fetch 1 item
 @router.get("/products/{product_id}", response_model=ProductResponse)
 def read_one_product(product_id: int, db: Session = Depends(get_db)):
-    product = get_product(db=db, product_id=product_id)
-    if product is None:
+    db_product = get_product(db=db, product_id=product_id)
+    if db_product is None:
         raise HTTPException(status_code=404, detail="Product not found")
-    return product
+    return db_product
 
 # create route to add 1 item
 @router.post("/products/", response_model=ProductResponse)
@@ -41,4 +41,11 @@ def detele_product(product_id: int, db: Session = Depends(get_db)):
     return db_product
 
 # create route to update 1 item
-@router.put()
+@router.put("/products/{product_id}", response_model=ProductResponse)
+def update_product(
+    product_id: int, product: ProductUpdate, db: Session = Depends(get_db)
+):
+    db_product = update_product(db, product_id=product_id, product=product)
+    if db_product is None:
+        raise HTTPException(status_code=404, detail="Product not found")
+    return db_product
