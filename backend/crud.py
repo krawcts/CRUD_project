@@ -17,7 +17,17 @@ def get_product(db: Session, product_id: int):
     return db.query(ProductModel).filter(ProductModel.id == product_id).first()
 
 # insert into (create)
-
+def create_product(db: Session, product: ProductCreate):
+    # transform view into ORM
+    db_product = ProductModel(**product.model_dump())
+    # add into table
+    db.add(db_product)
+    # commit
+    db.commit()
+    # refresh database
+    db.refresh(db_product)
+    # return created item to user
+    return db_product
 
 # udate where id = 1
 
